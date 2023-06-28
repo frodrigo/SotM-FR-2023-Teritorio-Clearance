@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>2023 - Clearance, suivre et extraire des données d’OSM sous contrainte de qualité</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+    <link rel="stylesheet" href="./_assets/style.css" />
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+# Clearance
+## Suivre et extraire des données d’OSM sous contrainte de qualité
+
+## SotM FR 2023
+
+Frédéric Rodrigo - Teritorio
+
+frederic@teritorio.fr
+</script></section><section  data-markdown><script type="text/template">
+## Contexte
+
+Besoin
+- Exposer et diffuser des données OSM
+  - site web, carte papier
+- Qualité et responsabilité contenu
+  - par ex. DAE
+
+Souhait
+- Contribuer à OSM
+- Collaborer
+- Mettre à jour les données
+</script></section><section ><section data-markdown><script type="text/template">
+# Qualité
+</script></section><section data-markdown><script type="text/template">
+### Qualité - À priori
+
+Validateur dans les éditeurs
+
+- Règles variables
+- Validation et respect des règles facultatives
+- Besoin en validation différente suivant la thématique
+</script></section><section data-markdown><script type="text/template">
+### Qualité - À posteriori
+
+Détection d’anomalies
+
+- Keep Right
+- OSM Inspector
+- Osmose-QA
+
+Itération sur la qualité
+
+</script></section></section><section  data-markdown><script type="text/template">
+## Mise à jour
+
+- Diff entrant
+- Rétro action de correction
+
+![](include/04-OSM-diff-update.png)
+
+La qualité des mises à jour n’est jamais assurée
+</script></section><section  data-markdown><script type="text/template">
+## Contrôle externe des changements
+
+Contrôle des changements dans OSM
+
+- OSMCha
+- Osm-analytic-tracker
+
+![](include/09-osmcha.png)
+
+</script></section><section ><section data-markdown><script type="text/template">
+## Filtre des mises à jour
+
+![](include/05-OSM-diff-update-filter.png)
+</script></section><section data-markdown><script type="text/template">
+### Filtre simple
+
+- [LeBonTag](https://www.lebontag.fr/) (libre)
+- Teritorio (pseudo libre)
+
+![](include/11-ideomap.png)
+</script></section><section data-markdown><script type="text/template">
+### LoCha
+
+MaRS / Daylight de Meta (Facebook)
+
+- Cohérence locale des changements
+- Mise à jour partielles
+
+![](include/12-mars.png)
+</script></section></section><section  data-markdown><script type="text/template">
+## Problème
+
+- MaRS : outil privé
+- Daylight : règles et fréquence non maîtrisées
+- LeBonTag : non collaboratif, sortie SIG, validation par objet
+</script></section><section  data-markdown><script type="text/template">
+## Le besoin
+
+Extrait OSM à qualité maîtrisée
+
+- Flux de mise à jour, à la minute
+- Filtrage automatique
+  - maîtrise des règles
+  - faible charge de travail humain
+- Collaboratif
+  - validation humain
+  - projet par territoires et thématiques
+- Cohérence locale des validations
+- Format I/O : PBF OSM + diff
+</script></section><section ><section data-markdown><script type="text/template">
+# Clearance
+</script></section><section data-markdown><script type="text/template">
+## Projet Clearance
+
+1 instance Clearance, plusieurs projets.
+
+Un projet. Une communauté.
+- Une zone : Extract OSM + Diff
+- Une thématique
+- Règles de validation
+
+Par ex : le tourisme, les stations ferroviaires, la randonné…
+</script></section><section data-markdown><script type="text/template">
+## Moteur Clearance
+
+- Base de donnes, import
+  - Extract OSM
+  - Diff, sans les appliquer
+- Moteur de règles pour valider les LoCha
+  - OK ⇒ LoCha appliqué
+  - Pas OK ⇒ LoCha en rétention
+    - Si Σ changement V+1 OK ⇒ application
+    - Sinon application LoCha manuelle
+- Export d'un Extract OSM + Diff
+
+Invariant : la qualité ne fait qu'augmenter*.
+</script></section><section data-markdown><script type="text/template">
+## Règles de validation
+
+Analyse
+- metadata
+- tags
+- geom
+</script></section><section data-markdown><script type="text/template">
+## Règles de validation
+
+Annotations indépendante ou en groupe
+
+geom, tag par tag...
+
+- Acceptable
+- Doutable / sans avis
+- Rejeté
+
+Entre dernière version intégré et LoCha en rétention
+</script></section><section data-markdown><script type="text/template">
+## Ex de règles
+
+- Rejet du changement
+  - déplacement geom > 10m
+  - changement par un contributeur débutant
+  - balck list des tags
+- Validation de l'état final
+  - une boulangerie doit avoir un nom
+  - pas de boulangerie en doublon
+</script></section></section><section  data-markdown><script type="text/template">
+## Clearance Beta
+
+- ✅ Import / Export + diff
+- ⌛ Jeux de règle de validation
+- ⏳ Interface de contrôle et validation manuelle
+- 🯀 Validation par LoCha
+
+[Demo beta](https://clearance-dev.teritorio.xyz/landes_tourism_poi/changes_logs/)
+
+</script></section><section  data-markdown><script type="text/template">
+# Conclusion
+
+Clearance : Extrait OSM à qualité maîtrisée
+
+- Prototype encore en cours
+- Vous voulez tester ?
+- https://github.com/teritorio/clearance
+- https://github.com/teritorio/clearance-frontend
+</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"controls":true,"progress":true}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
